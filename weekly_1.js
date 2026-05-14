@@ -1,3 +1,10 @@
+import {createInterface} from "node:readline";
+
+const cli = createInterface({
+    input: process.stdin,
+    output: process.stdout
+})
+
 const kfc = [
     //  Beverage 3 Produk
     {
@@ -165,12 +172,11 @@ const kfc = [
 ]
 
 const jumlahProduk = kfc.length;
-
-
-// Menampilkan Kategory Produk
-console.log (`DAFTAR KATEGORI`);
 let newCategory= [ "Promotion" ]
 let newCategorys = [];
+let newProducts = []
+
+// Menampilkan Kategory Produk
 
 for (let i = 0; i < jumlahProduk; i++) {
     let categorys = kfc[i].category;
@@ -188,35 +194,34 @@ for (let i = 0; i < newCategory.length; i++) {
     newCategorys.push(newr)
 } 
 
+let viewMenu = ``;
+    viewMenu += `Selamat Datang, silahkan pilih kategory menu kesukaan anda..!\n\n`;
+
 for ( let i = 0; i < newCategorys.length; i++) {
-    console.log(`${newCategorys[i].id}. ${newCategorys[i].category}`)
+    viewMenu += `${newCategorys[i].id}. ${newCategorys[i].category}\n`;
 }
 
-
-
-// Menampilkan Produk
-let searchProduk = "Beverage";
-console.log(`\nDAFTAR ${searchProduk.toUpperCase()}`);
-
-if (searchProduk === "Promotion") {
-    searchProduk = true;
-}
-
-let newProducts = []
-let i = 1
-while (i < jumlahProduk) {
-    let products = kfc[i].category;
-    if (searchProduk === true) {
-        products = kfc[i].isPromo; 
+cli.question(viewMenu, function(input) {
+    switch (input) {
+        case "1" :
+            console.clear()
+            console.log("Mohon maaf, menu ini belum tersedia masih dalam pengembangan")
+            break;
+        case "2" :
+            console.clear()
+            console.log("Mohon maaf, menu ini belum tersedia masih dalam pengembangan")
+            break;
+        case "3" :
+            console.clear()
+            console.log("Mohon maaf, menu ini belum tersedia masih dalam pengembangan")
+            break;
+        case "4" :
+            console.clear()
+            console.log("Mohon maaf, menu ini belum tersedia masih dalam pengembangan")
+            break;
+        default :
+            return;
     }
 
-    if ( products === searchProduk) {
-        const r = newProducts.push(kfc[i])
-    } 
-    i++
-}
-
-for (let i = 0; i < newProducts.length; i++) {
-    newProducts[i].id= i+1;
-    console.log(`${newProducts[i].id}. ${newProducts[i].name} - ${newProducts[i].price}`)
-}
+    cli.close();
+})
