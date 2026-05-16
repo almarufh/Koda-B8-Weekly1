@@ -186,6 +186,7 @@ function categoryToArray() {
 }
 
 function productsCategory (input) {
+  console.clear();
   productsByCategory = [];
   const category = arrayCategorys[input-1]
   let searchCategory = category.category;
@@ -233,12 +234,26 @@ function productsCategory (input) {
     };
     results += `${number}. ${promotion}${name} ${price}\n`;
   }
-  return results;
+  let message = `Hai, Ini daftar menu dengan kategori ${category.category}\n\n`;
+  message += `${results}\n`;
+  cli.question(message + `Pilih menu (1-${productsByCategory.length}) : `, function (input) {
+    const change = parseInt(input);
+    if (change >=1 && change <=productsByCategory.length) {
+      checkProduct(change);
+    } else {
+      backDashboard();
+    }
+  });
+  return results
 }
 
 function checkProduct (input) {
+  console.clear();
   choiceProduct = [];
   let choice = productsByCategory[input-1];
+  if (choice.isReady === false) {
+    productEmpty();
+  }
   choiceProduct = [
     ...choiceProduct,
     ...[choice]
@@ -252,10 +267,21 @@ function checkProduct (input) {
   ${choice.description}
   -----------------------------------
   `;
+  let message = `Hai, coba cek kembali apakah menu ini sesuai yang anda inginkan !\n\n`
+  message += `${result}\n`
+  cli.question(message + "Konfirmasi jumlah pesanan (1-100): ", function (input) {
+    const change = Number(input);
+    if (change >= 1 && change<= 100) {
+      confirmQty(change);
+    } else {
+      backDashboard();
+    }
+  });
   return result;
 }
 
 function confirmQty (input) {
+  console.clear();
   carts = [];
   let quantity = Number(input);
   let price = choiceProduct[0].price * input;
@@ -275,12 +301,20 @@ function confirmQty (input) {
   for (let i = 0; i < carts.length; i++) {
     results += `${carts[i].name} qty(x${carts[i].qty}) ${carts[i].price}`;
   }
+  let message = `${results}\n\n`;
+  cli.question(message + "Proses pesanan Y/N: ", function (input) {
+    if (input.toUpperCase() === "Y") {
+      confirmCheckout(input);
+    } else {
+      backDashboard()
+    }
+  });
   return results
 }
 
 function confirmCheckout (input) {
+  console.clear();
   const confirm = input.toUpperCase();
-  // console.log(carts)
   let qty = 0;
   let price = 0;
   let chartNew = carts[0].name;
@@ -292,14 +326,12 @@ function confirmCheckout (input) {
     price = choiceProduct[0].price*qty;
   }
 
-  // console.log(qty, price)
   let checkout = {
       name: carts[0].name,
       price: price,
       qty: qty
     }
 
-  // console.log(cartCheckout)
   if ( confirm === "Y") {
     cartCheckout[index]= {
       ...cartCheckout[index],
@@ -313,18 +345,65 @@ function confirmCheckout (input) {
   for (let i = 0; i < cartCheckout.length; i++) {
     results += `${cartCheckout[i].name} qty(x${cartCheckout[i].qty}) ${cartCheckout[i].price}`;
   }
+  
+  let message = `${results}\n\n`;
+  cli.question(message + "Proses pembayaran : ", function (input) {
+    const change = parseInt(input);
+    confirmCheckout(input);
+  });
 
   return results;
 }
 
-categoryToArray()
-productsCategory(2)
-// console.log(productsCategory(1))
-// console.log(checkProduct(1))
-checkProduct(3)
-console.log(confirmQty(4));
-// console.log(carts);
-console.log(confirmCheckout("y"))
+function dashboard() {
+  console.clear();
+  let welcome = `Selamat datang di KFC Depok Sawangan\n\n`;
+  welcome += `${categoryToArray()}\n`
+  cli.question(welcome + `Pilih Kategori (1-4) : `, function (input) {
+    const change = parseInt(input);
+    if (change >=1 && change <=4) {
+      productsCategory(change);
+    } else {
+      backDashboard();
+    }
+  });
+}
+
+function backDashboard () {
+  console.clear();
+  let message = `Input salah...!!!\n\n`;
+  message += `Pastikan input anda hanya sesuai perintah.\n\n`;
+  cli.question(message + "Kembali ke halaman awal Y/N  : ", function(input) {
+    if (input.toUpperCase() === "Y") {
+      dashboard()
+    } else {
+      backDashboard()
+    }
+  });
+}
+
+function productEmpty () {
+  console.clear();
+  let message = `Mohon maaf nih, Pesanan yang anda pilih saat ini Habis\n\nTapi tenang, masih banyak pilihan menu lainnya yah.\n\n`;
+  cli.question(message + "Kembali ke halaman awal Y/N  : ", function(input) {
+    if (input.toUpperCase() === "Y") {
+      dashboard()
+    } else {
+      backDashboard()
+    }
+  });
+}
+
+dashboard();
+
+// categoryToArray()
+// productsCategory(2)
+// // console.log(productsCategory(1))
+// // console.log(checkProduct(1))
+// checkProduct(3)
+// console.log(confirmQty(4));
+// // console.log(carts);
+// console.log(confirmCheckout("y"))
 /* LIST FUNCTION
 1. categoryToArray()
 2. productsCategory (input)
