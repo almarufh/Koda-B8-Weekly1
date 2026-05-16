@@ -144,7 +144,9 @@ const kfc = [
 const lengthProducts = kfc.length;
 let productsByCategory = [];
 let carts = []; 
-let cartCheckout = [];
+let cartCheckout = [ 
+  { name: '7Pc Chick N Rice', price: 54000, qty: 4 }
+ ]
 let choiceProduct = [];
 let arrayCategorys = [
   {
@@ -170,7 +172,8 @@ function categoryToArray() {
       ];
       arrayCategorys = [
         ...arrayCategorys, 
-        ...tempsCategory];
+        ...tempsCategory
+      ];
     }
   }
 
@@ -252,7 +255,8 @@ function checkProduct (input) {
   return result;
 }
 
-function confirm (input) {
+function confirmQty (input) {
+  carts = [];
   let quantity = Number(input);
   let price = choiceProduct[0].price * input;
   let makeCarts = [
@@ -274,17 +278,56 @@ function confirm (input) {
   return results
 }
 
+function confirmCheckout (input) {
+  const confirm = input.toUpperCase();
+  // console.log(carts)
+  let qty = 0;
+  let price = 0;
+  let chartNew = carts[0].name;
+  let chartOld = cartCheckout.find((item) => item.name === chartNew);
+  let index = cartCheckout.findIndex((item) => item.name === chartNew);
+
+  if (cartCheckout.some((item) => item.name === chartNew)) {
+    qty = carts[0].qty + chartOld.qty;
+    price = choiceProduct[0].price*qty;
+  }
+
+  // console.log(qty, price)
+  let checkout = {
+      name: carts[0].name,
+      price: price,
+      qty: qty
+    }
+
+  // console.log(cartCheckout)
+  if ( confirm === "Y") {
+    cartCheckout[index]= {
+      ...cartCheckout[index],
+      ...checkout
+    }
+  } else {
+    result = "failled"
+  }
+
+  let results = "";
+  for (let i = 0; i < cartCheckout.length; i++) {
+    results += `${cartCheckout[i].name} qty(x${cartCheckout[i].qty}) ${cartCheckout[i].price}`;
+  }
+
+  return results;
+}
+
 categoryToArray()
-productsCategory(1)
+productsCategory(2)
 // console.log(productsCategory(1))
 // console.log(checkProduct(1))
-checkProduct(1)
-console.log(confirm(4));
+checkProduct(3)
+console.log(confirmQty(4));
 // console.log(carts);
-
+console.log(confirmCheckout("y"))
 /* LIST FUNCTION
 1. categoryToArray()
 2. productsCategory (input)
 3. checkProduct (input)
-4.  confirm (input)
-/
+4.  confirmQty (input)
+*/
