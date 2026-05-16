@@ -1,227 +1,290 @@
-import {createInterface} from "node:readline";
-
+import { createInterface } from "node:readline";
 const cli = createInterface({
-    input: process.stdin,
-    output: process.stdout
-})
+  input: process.stdin,
+  output: process.stdout,
+});
+
+console.clear();
 
 const kfc = [
-    //  Beverage 3 Produk
-    {
-        name: "Coca Cola",
-        category: "Beverage",
-        description: "Coca-Cola",
-        price: 14000,
-        isReady: true,
-        isStock: false,
-        isPromo: false,
-        stock: 0
-    },
-    {
-        name: "Mineral Water",
-        category: "Beverage",
-        description: "Mineral Water",
-        price: 16000,
-        isReady: true,
-        isStock: false,
-        isPromo: false,
-        stock: 0
-    },
-    {
-        name: "Manggo Float",
-        category: "Beverage",
-        description: "Manggo Float",
-        price: 14000,
-        isReady: true,
-        isStock: false,
-        isPromo: false,
-        stock: 0
-    },
-    // Chicken 6 Menu
-    {
-        name: "Super Besar 1",
-        category: "Chicken",
-        description: "1 pc Chicken + 1 Rice + 1 Coca-Cola",
-        price: 41500,
-        isReady: true,
-        isStock: false,
-        isPromo: false,
-        stock: 0
-    },
-    {
-        name: "7Pc Chick N Rice",
-        category: "Chicken",
-        description: "7 pc Chicken +7 Rice",
-        price: 13500,
-        isReady: true,
-        isStock: false,
-        isPromo: true,
-        stock: 0
-    },
-    {
-        name: "BIG1 Nasi Ayam & Minum",
-        category: "Chicken",
-        description: "2 pc Chicken 2 Rice 2 Mineral Water [Potongan Ayam yang tersedia tergantung ketersediaan ditoko pada saat pemesanan / pengiriman]",
-        price: 13500,
-        isReady: true,
-        isStock: false,
-        isPromo: true,
-        stock: 0
-    },
-    {
-        name: "Petook Winger Duo",
-        category: "Chicken",
-        description: "4 Wingette + 4 Drumette + Rice + 2 Coke Med",
-        price: 13500,
-        isReady: true,
-        isStock: false,
-        isPromo: true,
-        stock: 0
-    },
-    {
-        name: "Super Besar 2",
-        category: "Chicken",
-        description: "2 Pc Chicken + Rice + 1 Coca-Cola Medium",
-        price: 54500,
-        isReady: true,
-        isStock: false,
-        isPromo: false,
-        stock: 0
-    },
-    {
-        name: "1 Pc Chicken",
-        category: "Chicken",
-        description: "1pc Chicken",
-        price: 24500,
-        isReady: true,
-        isStock: false,
-        isPromo: false,
-        stock: 0
-    },
-    {
-        name: "Crispy Strips",
-        category: "Chicken",
-        description: "2pcs Chicken Strips",
-        price: 22000,
-        isReady: true,
-        isStock: false,
-        isPromo: false,
-        stock: 0
-    },
-    {
-        name: "ChickenSteak With French Fries",
-        category: "Chicken",
-        description: "Chicken Steak + French Fries Reguler + Coke Zero",
-        price: 56500,
-        isReady: true,
-        isStock: false,
-        isPromo: false,
-        stock: 0
-    },
-    {
-        name: "Wingger BBQ Festive 2",
-        category: "Chicken",
-        description: "5 Pcs Drumtte, 5 Wingette + 2 1/2 Sachet Seasoning BBQ",
-        price: 60000,
-        isReady: true,
-        isStock: false,
-        isPromo: false,
-        stock: 0
-    },
-    // Bowl/Burger
-    {
-        name: "Breakfast Combo 1",
-        category: "Bowl/Burger",
-        description: "1 Original Porridge + Hot Tea / Hot Coffee",
-        price: 0,
-        isReady: false, // Persedian Habis
-        isStock: false,
-        isPromo: false,
-        stock: 0
-    },
-    {
-        name: "Breakfast Combo 2",
-        category: "Bowl/Burger",
-        description: "1 Chicken Porridge + Hot Tea / Hot Coffee",
-        price: 0,
-        isReady: false,
-        isStock: false,
-        isPromo: false,
-        stock: 0
-    },
-    {
-        name: "Kombo Colonel Burger",
-        category: "Bowl/Burger",
-        description: "1 Colonel Burger + 1 French Fries Reguler  + 1 Fanta Reguler",
-        price: 59000,
-        isReady: true,
-        isStock: false,
-        isPromo: false,
-        stock: 0
-    },
-    {
-        name: "Kombo Crispy Burger",
-        category: "Bowl/Burger",
-        description: "1 Crispy Burger + 1 French Fries Reguler + 1 Fanta Reguler",
-        price: 45500,
-        isReady: true,
-        isStock: false,
-        isPromo: false,
-        stock: 0
-    }
-]
+  //  Beverage 3 Produk
+  {
+    name: "Coca Cola",
+    category: "Beverage",
+    description: "Coca-Cola",
+    price: 14000,
+    isReady: true,
+    isPromo: false
+  },
+  {
+    name: "Mineral Water",
+    category: "Beverage",
+    description: "Mineral Water",
+    price: 16000,
+    isReady: true,
+    isPromo: false
+  },
+  {
+    name: "Manggo Float",
+    category: "Beverage",
+    description: "Manggo Float",
+    price: 14000,
+    isReady: true,
+    isPromo: false
+  },
+  // Chicken 6 Menu
+  {
+    name: "Super Besar 1",
+    category: "Chicken",
+    description: "1 pc Chicken + 1 Rice + 1 Coca-Cola",
+    price: 41500,
+    isReady: true,
+    isPromo: false
+  },
+  {
+    name: "7Pc Chick N Rice",
+    category: "Chicken",
+    description: "7 pc Chicken +7 Rice",
+    price: 13500,
+    isReady: true,
+    isPromo: true
+  },
+  {
+    name: "BIG1 Nasi Ayam & Minum",
+    category: "Chicken",
+    description:
+      "2 pc Chicken 2 Rice 2 Mineral Water [Potongan Ayam yang tersedia tergantung ketersediaan ditoko pada saat pemesanan / pengiriman]",
+    price: 13500,
+    isReady: true,
+    isPromo: true
+  },
+  {
+    name: "Petook Winger Duo",
+    category: "Chicken",
+    description: "4 Wingette + 4 Drumette + Rice + 2 Coke Med",
+    price: 13500,
+    isReady: true,
+    isPromo: true
+  },
+  {
+    name: "Super Besar 2",
+    category: "Chicken",
+    description: "2 Pc Chicken + Rice + 1 Coca-Cola Medium",
+    price: 54500,
+    isReady: true,
+    isPromo: false
+  },
+  {
+    name: "1 Pc Chicken",
+    category: "Chicken",
+    description: "1pc Chicken",
+    price: 24500,
+    isReady: true,
+    isPromo: false
+  },
+  {
+    name: "Crispy Strips",
+    category: "Chicken",
+    description: "2pcs Chicken Strips",
+    price: 22000,
+    isReady: true,
+    isPromo: false
+  },
+  {
+    name: "ChickenSteak With French Fries",
+    category: "Chicken",
+    description: "Chicken Steak + French Fries Reguler + Coke Zero",
+    price: 56500,
+    isReady: true,
+    isPromo: false
+  },
+  {
+    name: "Wingger BBQ Festive 2",
+    category: "Chicken",
+    description: "5 Pcs Drumtte, 5 Wingette + 2 1/2 Sachet Seasoning BBQ",
+    price: 60000,
+    isReady: true,
+    isPromo: false
+  },
+  // Bowl/Burger
+  {
+    name: "Breakfast Combo 1",
+    category: "Bowl/Burger",
+    description: "1 Original Porridge + Hot Tea / Hot Coffee",
+    price: 0,
+    isReady: false, // Persedian Habis
+    isPromo: false
+  },
+  {
+    name: "Breakfast Combo 2",
+    category: "Bowl/Burger",
+    description: "1 Chicken Porridge + Hot Tea / Hot Coffee",
+    price: 0,
+    isReady: false,
+    isPromo: false
+  },
+  {
+    name: "Kombo Colonel Burger",
+    category: "Bowl/Burger",
+    description: "1 Colonel Burger + 1 French Fries Reguler  + 1 Fanta Reguler",
+    price: 59000,
+    isReady: true,
+    isPromo: false
+  },
+  {
+    name: "Kombo Crispy Burger",
+    category: "Bowl/Burger",
+    description: "1 Crispy Burger + 1 French Fries Reguler + 1 Fanta Reguler",
+    price: 45500,
+    isReady: true,
+    isPromo: false
+  },
+];
 
-const jumlahProduk = kfc.length;
-let newCategory= [ "Promotion" ]
-let newCategorys = [];
-let newProducts = []
+const lengthProducts = kfc.length;
+let productsByCategory = [];
+let carts = []; 
+let cartCheckout = [];
+let choiceProduct = [];
+let arrayCategorys = [
+  {
+    category: "Promotion",
+    id: 1,
+  },
+];
 
-// Menampilkan Kategory Produk
+function formatRupiah (number) {
 
-for (let i = 0; i < jumlahProduk; i++) {
-    let categorys = kfc[i].category;
-    if (!(newCategory.includes(categorys)) ){
-        newCategory.push(kfc[i].category)
-    }
 }
 
-for (let i = 0; i < newCategory.length; i++) {
-    const categ = newCategory[i];
-    const newr = {
-        category: newCategory[i], 
-        id: i+1
+// Fungsi Push Category
+function categoryToArray() {
+  for (let i = 0; i < lengthProducts; i++) {
+    const categorys = kfc[i].category;
+    if (!arrayCategorys.some((item) => item.category === categorys)) {
+      let tempsCategory = [
+        {
+          category: categorys,
+          id: arrayCategorys.length + 1,
+        },
+      ];
+      arrayCategorys = [
+        ...arrayCategorys, 
+        ...tempsCategory];
     }
-    newCategorys.push(newr)
-} 
+  }
 
-let viewMenu = ``;
-    viewMenu += `Selamat Datang, silahkan pilih kategory menu kesukaan anda..!\n\n`;
+  let result = "";
+  for (let i = 0; i < arrayCategorys.length; i++) {
+    result += `${arrayCategorys[i].id}. ${arrayCategorys[i].category}\n`;
+  }
 
-for ( let i = 0; i < newCategorys.length; i++) {
-    viewMenu += `${newCategorys[i].id}. ${newCategorys[i].category}\n`;
+  return result ;
 }
 
-cli.question(viewMenu, function(input) {
-    switch (input) {
-        case "1" :
-            console.clear()
-            console.log("Mohon maaf, menu ini belum tersedia masih dalam pengembangan")
-            break;
-        case "2" :
-            console.clear()
-            console.log("Mohon maaf, menu ini belum tersedia masih dalam pengembangan")
-            break;
-        case "3" :
-            console.clear()
-            console.log("Mohon maaf, menu ini belum tersedia masih dalam pengembangan")
-            break;
-        case "4" :
-            console.clear()
-            console.log("Mohon maaf, menu ini belum tersedia masih dalam pengembangan")
-            break;
-        default :
-            return;
-    }
+function productsCategory (input) {
+  productsByCategory = [];
+  const category = arrayCategorys[input-1]
+  let searchCategory = category.category;
+  if (searchCategory === "Promotion") {
+      searchCategory = true;
+    };
+  
+  for (let i = 0; i < lengthProducts; i++) {
+    let products = kfc[i].category;
+    if (searchCategory === true) {
+      products = kfc[i].isPromo;
+    };
 
-    cli.close();
-})
+    if (products === searchCategory) {
+      productsByCategory = [
+        ...productsByCategory,
+        ...[kfc[i]]
+      ]
+    };
+  }
+  
+  for (let i = 0; i < productsByCategory.length; i++) {
+    let createId = {
+      id: i +1
+    };
+
+    productsByCategory[i] = {
+      ...productsByCategory[i],
+      ...createId
+    };
+  };
+  
+  let results = "";
+  for (let i = 0; i < productsByCategory.length; i++) {
+    let number = productsByCategory[i].id;
+    let name = productsByCategory[i].name;
+    let price = `--> [ ${productsByCategory[i].price} ]`;
+    if (productsByCategory[i].isReady === false) {
+      price = "[Persedian Habis]";
+    };
+
+    let promotion = "";
+    if (productsByCategory[i].isPromo === true) {
+      promotion = "[PROMO] ";
+    };
+    results += `${number}. ${promotion}${name} ${price}\n`;
+  }
+  return results;
+}
+
+function checkProduct (input) {
+  choiceProduct = [];
+  let choice = productsByCategory[input-1];
+  choiceProduct = [
+    ...choiceProduct,
+    ...[choice]
+  ]
+  const result = `
+  Nama      : ${choice.name}
+  Harga     : ${choice.price}
+
+  Deskripsi 
+  -----------------------------------
+  ${choice.description}
+  -----------------------------------
+  `;
+  return result;
+}
+
+function confirm (input) {
+  let quantity = Number(input);
+  let price = choiceProduct[0].price * input;
+  let makeCarts = [
+    {
+      name: choiceProduct[0].name,
+      price: price,
+      qty: quantity
+    }
+  ]
+  carts = [
+    ...carts,
+    ...makeCarts
+  ]
+
+  let results = "";
+  for (let i = 0; i < carts.length; i++) {
+    results += `${carts[i].name} qty(x${carts[i].qty}) ${carts[i].price}`;
+  }
+  return results
+}
+
+categoryToArray()
+productsCategory(1)
+// console.log(productsCategory(1))
+// console.log(checkProduct(1))
+checkProduct(1)
+console.log(confirm(4));
+// console.log(carts);
+
+/* LIST FUNCTION
+1. categoryToArray()
+2. productsCategory (input)
+3. checkProduct (input)
+4.  confirm (input)
+/
