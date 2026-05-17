@@ -302,7 +302,7 @@ function confirmQty (input) {
     results += `${carts[i].name} qty(x${carts[i].qty}) ${carts[i].price}`;
   }
   let message = `${results}\n\n`;
-  cli.question(message + "Proses pesanan Y/N: ", function (input) {
+  cli.question(message + "Masukan keranjang y/n: ", function (input) {
     if (input.toUpperCase() === "Y") {
       confirmCheckout(input);
     } else {
@@ -341,15 +341,66 @@ function confirmCheckout (input) {
     result = "failled"
   }
 
-  let results = "";
+  let totalPrice = 0;
+  let results = `Periksa kembali pesanan anda sebelum checkout!\n\n================================\n`;
   for (let i = 0; i < cartCheckout.length; i++) {
+    totalPrice += cartCheckout[i].price;
     results += `${cartCheckout[i].name} qty(x${cartCheckout[i].qty}) ${cartCheckout[i].price}`;
   }
   
-  let message = `${results}\n\n`;
-  cli.question(message + "Proses pembayaran : ", function (input) {
+  let message = `${results}\n`;
+  message += `-----------\n`;
+  message += `Total Pembayaran = ${totalPrice}\n`;
+  message += `================================\n`;
+  message += `\n1. Edit Jumlah Pesanan\n2. Hapus Pesanan\n3. Tamba Pesanan\n4. Checkout\n\n`
+
+  cli.question(message + "Lanjut (1-4) : ", function (input) {
     const change = parseInt(input);
-    confirmCheckout(input);
+    switch (input) {
+      case "1":
+        confirmCheckout("Y");
+        break;
+      case "2":
+        confirmCheckout("Y");
+        break;
+      case "3":
+        dashboard();
+        break;
+      case "4":
+        checkoutPayment();
+        break;
+      default:
+      confirmCheckout("Y");
+      return;
+    }
+  });
+
+  return results;
+}
+
+function checkoutPayment () {
+  console.clear();
+  let totalPrice = 0;
+  let results = `================================\n`;
+  for (let i = 0; i < cartCheckout.length; i++) {
+    totalPrice += cartCheckout[i].price;
+    results += `${cartCheckout[i].name} qty(x${cartCheckout[i].qty}) ${cartCheckout[i].price}`;
+  }
+  
+  let message = `${results}\n`;
+  message += `-----------\n`;
+  message += `Total Pembayaran = ${totalPrice}\n`;
+  message += `================================\n\n`;
+
+  cli.question(message + "Sudah bayar y/n : ", function (input) {
+    const change = parseInt(input);
+    if (input.toUpperCase() === "Y") {
+      console.clear()
+      console.log("========================\n\nTRANSAKSI SUKSES..!!!\n\n========================")
+      return;
+    } else {
+      checkout("4");
+    }
   });
 
   return results;
