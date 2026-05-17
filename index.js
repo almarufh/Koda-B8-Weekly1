@@ -144,9 +144,7 @@ const kfc = [
 const lengthProducts = kfc.length;
 let productsByCategory = [];
 let carts = []; 
-let cartCheckout = [ 
-  { name: '7Pc Chick N Rice', price: 54000, qty: 4 }
- ]
+let cartCheckout = []
 let choiceProduct = [];
 let arrayCategorys = [
   {
@@ -314,29 +312,51 @@ function confirmQty (input) {
 
 function confirmCheckout (input) {
   console.clear();
-  const confirm = input.toUpperCase();
+  let confirm = input.toUpperCase();
   let qty = 0;
   let price = 0;
   let chartNew = carts[0].name;
   let chartOld = cartCheckout.find((item) => item.name === chartNew);
+  console.log("chartOld :", chartOld)
   let index = cartCheckout.findIndex((item) => item.name === chartNew);
-
+  let getData = null;
+  console.log(getData)
+  if ( index === -1 ) {
+    confirm = "N";
+  }
+  console.log(confirm);
+  console.log("Index :", index)
   if (cartCheckout.some((item) => item.name === chartNew)) {
     qty = carts[0].qty + chartOld.qty;
     price = choiceProduct[0].price*qty;
   }
-
+  
   let checkout = {
       name: carts[0].name,
       price: price,
       qty: qty
     }
 
+  if (confirm === "N") {
+    checkout = [
+      {
+        name: carts[0].name,
+        price: carts[0].price,
+        qty: carts[0].qty
+      }
+    ]
+  }
+
   if ( confirm === "Y") {
     cartCheckout[index]= {
       ...cartCheckout[index],
       ...checkout
     }
+  } else if ( confirm === "N" ){
+    cartCheckout= [
+      ...cartCheckout,
+      ...checkout
+    ]
   } else {
     result = "failled"
   }
@@ -345,7 +365,7 @@ function confirmCheckout (input) {
   let results = `Periksa kembali pesanan anda sebelum checkout!\n\n================================\n`;
   for (let i = 0; i < cartCheckout.length; i++) {
     totalPrice += cartCheckout[i].price;
-    results += `${cartCheckout[i].name} qty(x${cartCheckout[i].qty}) ${cartCheckout[i].price}`;
+    results += `${cartCheckout[i].name} qty(x${cartCheckout[i].qty}) ${cartCheckout[i].price}\n`;
   }
   
   let message = `${results}\n`;
@@ -374,8 +394,6 @@ function confirmCheckout (input) {
       return;
     }
   });
-
-  return results;
 }
 
 function checkoutPayment () {
@@ -384,7 +402,7 @@ function checkoutPayment () {
   let results = `================================\n`;
   for (let i = 0; i < cartCheckout.length; i++) {
     totalPrice += cartCheckout[i].price;
-    results += `${cartCheckout[i].name} qty(x${cartCheckout[i].qty}) ${cartCheckout[i].price}`;
+    results += `${i+1}. ${cartCheckout[i].name} qty(x${cartCheckout[i].qty}) ${cartCheckout[i].price}\n`;
   }
   
   let message = `${results}\n`;
