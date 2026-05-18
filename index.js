@@ -146,6 +146,8 @@ let productsByCategory = [];
 let carts = []; 
 let cartCheckout = []
 let choiceProduct = [];
+let totalPrice = 0;
+let cashBack = "";
 let arrayCategorys = [
   {
     category: "Promotion",
@@ -153,11 +155,6 @@ let arrayCategorys = [
   },
 ];
 
-function formatRupiah (number) {
-
-}
-
-// Fungsi Push Category
 function categoryToArray() {
   for (let i = 0; i < lengthProducts; i++) {
     const categorys = kfc[i].category;
@@ -304,7 +301,7 @@ function confirmQty (input) {
     if (input.toUpperCase() === "Y") {
       confirmCheckout(input);
     } else {
-      backDashboard()
+      dashboard()
     }
   });
   return results
@@ -317,15 +314,14 @@ function confirmCheckout (input) {
   let price = 0;
   let chartNew = carts[0].name;
   let chartOld = cartCheckout.find((item) => item.name === chartNew);
-  console.log("chartOld :", chartOld)
+  
   let index = cartCheckout.findIndex((item) => item.name === chartNew);
   let getData = null;
-  console.log(getData)
+  
   if ( index === -1 ) {
     confirm = "N";
   }
-  console.log(confirm);
-  console.log("Index :", index)
+  
   if (cartCheckout.some((item) => item.name === chartNew)) {
     qty = carts[0].qty + chartOld.qty;
     price = choiceProduct[0].price*qty;
@@ -361,11 +357,10 @@ function confirmCheckout (input) {
     result = "failled"
   }
 
-  let totalPrice = 0;
-  let results = `Periksa kembali pesanan anda sebelum checkout!\n\n================================\n`;
+  let results = `Periksa kembali pesanan anda sebelum checkout!\n\n================================\n\n`;
   for (let i = 0; i < cartCheckout.length; i++) {
     totalPrice += cartCheckout[i].price;
-    results += `${cartCheckout[i].name} qty(x${cartCheckout[i].qty}) ${cartCheckout[i].price}\n`;
+    results += `${i+1}. ${cartCheckout[i].name} qty(x${cartCheckout[i].qty}) ${cartCheckout[i].price}\n`;
   }
   
   let message = `${results}\n`;
@@ -398,10 +393,13 @@ function confirmCheckout (input) {
 
 function checkoutPayment () {
   console.clear();
-  let totalPrice = 0;
-  let results = `================================\n`;
+  let results = ``;
+  if (cashBack.length >= 1 ) {
+    results +=`${cashBack}\n\n`;
+  }
+  results += `================================\n\n`;
   for (let i = 0; i < cartCheckout.length; i++) {
-    totalPrice += cartCheckout[i].price;
+    // totalPrice += cartCheckout[i].price;
     results += `${i+1}. ${cartCheckout[i].name} qty(x${cartCheckout[i].qty}) ${cartCheckout[i].price}\n`;
   }
   
@@ -410,32 +408,63 @@ function checkoutPayment () {
   message += `Total Pembayaran = ${totalPrice}\n`;
   message += `================================\n\n`;
 
-  cli.question(message + "Sudah bayar y/n : ", function (input) {
-    const change = parseInt(input);
-    if (input.toUpperCase() === "Y") {
-      console.clear()
-      console.log("========================\n\nTRANSAKSI SUKSES..!!!\n\n========================")
-      return;
-    } else {
-      checkout("4");
+  cli.question(message + "Input Nominal Pembayaran : ", function (input) {
+    const change = Number(input);
+    if (isNaN(change)) {
+      console.log("Input must be Number");
+      backDashboard();
+    } 
+    else {
+      let kembalian = payment(change);
+      if (typeof kembalian === "string") {
+        cashBack = kembalian;
+        checkoutPayment();
+      }
+      else {
+        console.clear();
+        console.log("\n========================\n\nTransaksi Sukses...!!!\n\n========================\n\nUang Kembalian sebesar = ", kembalian);
+      }
     }
   });
 
   return results;
 }
 
+function checkCraftCheckout () {
+  let available = false;
+  if (cartCheckout.length >= 1) {
+    available = true
+  }
+  return available;
+}
+
 function dashboard() {
   console.clear();
   let welcome = `Selamat datang di KFC Depok Sawangan\n\n`;
-  welcome += `${categoryToArray()}\n`
-  cli.question(welcome + `Pilih Kategori (1-4) : `, function (input) {
+  welcome += `${categoryToArray()}`
+  if (checkCraftCheckout() === true) {
+    welcome += `0. Checkout\n`;
+  }
+  cli.question(welcome + `\n\nPilih Kategori (1-4) : `, function (input) {
     const change = parseInt(input);
     if (change >=1 && change <=4) {
       productsCategory(change);
+    } else if (change === 0) {
+      checkoutPayment("4");
     } else {
       backDashboard();
     }
   });
+}
+
+function payment (input) {
+  let cash = Number(input);
+  let moneyBack = cash - totalPrice;
+  if (moneyBack < 0) {
+    let kekurangan = moneyBack*-1;
+    moneyBack = `Mohon Maaf...!!!\nCash anda kurang ${kekurangan}`;
+  }
+  return moneyBack;
 }
 
 function backDashboard () {
@@ -464,18 +493,3 @@ function productEmpty () {
 }
 
 dashboard();
-
-// categoryToArray()
-// productsCategory(2)
-// // console.log(productsCategory(1))
-// // console.log(checkProduct(1))
-// checkProduct(3)
-// console.log(confirmQty(4));
-// // console.log(carts);
-// console.log(confirmCheckout("y"))
-/* LIST FUNCTION
-1. categoryToArray()
-2. productsCategory (input)
-3. checkProduct (input)
-4.  confirmQty (input)
-*/
